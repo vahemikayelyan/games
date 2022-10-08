@@ -1,0 +1,24 @@
+.card {
+  --width: 5em;
+  --height: calc(var(--width) * 1.6);
+  width: var(--width);
+  height: var(--height);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  background-color: #ffffff;
+  border: 1px solid #bcbcbc;
+  padding: 1em;
+  border-radius: 0.5em;
+  position: relative;
+  align-items: center;
+}
+
+.card > div {
+  grid-row-end: span 2;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

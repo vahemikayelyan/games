@@ -1,0 +1,13 @@
+.cards {
+  display: flex;
+  width: 40em;
+}
+
+.card-wrapper {
+  flex: 1 0 0;
+  overflow-x: hidden;
+}
+
+.card-wrapper:last-child {
+  flex: 0 0 auto;
+}
