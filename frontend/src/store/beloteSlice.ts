@@ -7,7 +7,7 @@ interface BeloteState {
 
 const initialState: BeloteState = {
   players: [
-    { username: "Vahe", pair: "Armen", left: "Sergey6" },
+    { username: "Vahe", pair: "Armen", left: "Sergey" },
     { username: "Armen", pair: "Vahe", left: "Artur" },
     { username: "Sergey", pair: "Artur", left: "Armen" },
     { username: "Artur", pair: "Sergey", left: "Vahe" },
