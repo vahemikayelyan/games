@@ -41,13 +41,6 @@
   flex-direction: column;
 }
 
-.grid-container > div.table div {
-  box-shadow: 0px 0px 3px 0px #898989;
-  background: #7bf3f3;
-  height: 25em;
-  width: 25em;
-}
-
 .grid-container > div.top {
   flex-direction: column-reverse;
 }

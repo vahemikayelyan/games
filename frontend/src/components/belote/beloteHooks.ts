@@ -1,4 +1,5 @@
-import { IPlayer } from "./player/Player";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export type Suit = "heart" | "club" | "spade" | "diamond";
 export type Value = "7" | "8" | "9" | "J" | "Q" | "K" | "10" | "A";
@@ -17,13 +18,7 @@ export interface CardDetails {
 }
 
 export function usePlayers(username: string) {
-  const players: IPlayer[] = [
-    { username: "Vahe", pair: "Armen", left: "Sergey" },
-    { username: "Armen", pair: "Vahe", left: "Artur" },
-    { username: "Sergey", pair: "Artur", left: "Armen" },
-    { username: "Artur", pair: "Sergey", left: "Vahe" },
-  ];
-
+  const players = useSelector((state: RootState) => state.belote.players);
   let top = players.find((player) => player.pair === username);
   let bottom = players.find((player) => player.username === username);
   let left = players.find((player) => player.username === bottom?.left);
@@ -45,6 +40,13 @@ export function useNewDeck() {
       deck.push({ suit, value, positions: getPositions(value) });
     });
   });
+
+  for (let i = deck.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * i);
+    let temp = deck[i];
+    deck[i] = deck[j];
+    deck[j] = temp;
+  }
 
   return deck;
 }

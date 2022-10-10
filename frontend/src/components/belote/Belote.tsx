@@ -4,7 +4,7 @@ import Player from "./player/Player";
 import Table from "./table/Table";
 
 const Belote = () => {
-  const { top, bottom, left, right } = usePlayers("Armen");
+  const { top, bottom, left, right } = usePlayers("Sergey");
 
   return (
     <>
@@ -15,8 +15,8 @@ const Belote = () => {
         <div className="left space">
           <Player {...left} />
         </div>
-        <div className="table space">
-          <Table />
+        <div className="space">
+          <Table {...{ top, bottom, left, right }} />
         </div>
         <div className="right space">
           <Player {...right} />

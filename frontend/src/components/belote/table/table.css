@@ -1,0 +1,11 @@
+.grid-container .table {
+  box-shadow: 0px 0px 3px 0px #898989;
+  background: #7bf3f3;
+  height: 25em;
+  width: 25em;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
