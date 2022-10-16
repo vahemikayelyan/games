@@ -4,7 +4,7 @@ import Player from "./player/Player";
 import Table from "./table/Table";
 
 const Belote = () => {
-  const { top, bottom, left, right } = usePlayers("Sergey");
+  const { top, bottom, left, right } = usePlayers("Vahe");
 
   return (
     <>

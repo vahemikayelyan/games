@@ -1,25 +1,9 @@
 import { CardDetails } from "../beloteHooks";
 import "./card.css";
-import Club from "./Club";
-import Diamond from "./Diamond";
-import Heart from "./Heart";
-import Spade from "./Spade";
+import CardSuit from "./CardSuit";
 
 const Card = (props: CardDetails) => {
   const { suit } = props;
-
-  function Suit(suitProps: { rotate?: boolean }) {
-    switch (suit) {
-      case "club":
-        return <Club {...suitProps} />;
-      case "diamond":
-        return <Diamond {...suitProps} />;
-      case "heart":
-        return <Heart {...suitProps} />;
-      default:
-        return <Spade {...suitProps} />;
-    }
-  }
 
   return (
     <div className="card">
@@ -36,7 +20,7 @@ const Card = (props: CardDetails) => {
               gridRowEnd: pos.rowSpan ? "span 3" : undefined,
             }}
           >
-            <Suit rotate={pos.rotate} />
+            <CardSuit suit={suit} rotate={pos.rotate} />
           </div>
         );
       })}

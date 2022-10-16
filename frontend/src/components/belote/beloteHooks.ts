@@ -100,7 +100,7 @@ function getPositions(value: Value) {
   return positions;
 }
 
-const getSuits = (): Suit[] => {
+export const getSuits = (): Suit[] => {
   const values: Suit[] = ["heart", "club", "spade", "diamond"];
 
   return values;

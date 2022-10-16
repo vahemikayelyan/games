@@ -11,3 +11,8 @@
 .card-wrapper:last-child {
   flex: 0 0 auto;
 }
+
+.player-details {
+  display: flex;
+  gap: 1em;
+}

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { dealCards } from "../../../store/beloteSlice";
+import { dealCards, startGame } from "../../../store/beloteSlice";
 import { useNewDeck } from "../beloteHooks";
 import Card from "../card/Card";
 import { IPlayer } from "../player/Player";
@@ -17,12 +17,16 @@ const Table = ({
   left: IPlayer | undefined;
   right: IPlayer | undefined;
 }) => {
+  const isStarted = useSelector((state: RootState) => state.belote.isStarted);
   const players = useSelector((state: RootState) => state.belote.players);
+  const dealer = useSelector((state: RootState) => state.belote.dealer);
   const dispatch = useDispatch();
   let newDeck = useNewDeck();
 
   const handleDealCards = () => {
-    let player = players.find((p) => p.username === "Vahe");
+    let player = players.find((p) => p.username === dealer);
+
+    dispatch(startGame());
 
     while (newDeck.length > 0) {
       const nextPlayer = player?.left || "";
@@ -34,7 +38,7 @@ const Table = ({
   return (
     <div className="table">
       <div>
-        <button onClick={handleDealCards}>Deal cards</button>
+        {!isStarted && <button onClick={handleDealCards}>Deal cards</button>}
       </div>
       <div style={{ gridRow: "1 / span 3" }}>
         {left?.playedCard && <Card {...left?.playedCard} />}

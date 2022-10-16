@@ -1,6 +1,8 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store";
 import { playCard } from "../../../store/beloteSlice";
 import { CardDetails } from "../beloteHooks";
+import Betting from "../betting/Betting";
 import Card from "../card/Card";
 import "./player.css";
 
@@ -13,6 +15,7 @@ export interface IPlayer {
 }
 
 const Player = ({ username, cards }: IPlayer) => {
+  const bettor = useSelector((state: RootState) => state.belote.bettor);
   const dispatch = useDispatch();
   const handleClick = (card: CardDetails) => {
     dispatch(playCard([card, username || ""]));
@@ -20,7 +23,10 @@ const Player = ({ username, cards }: IPlayer) => {
 
   return (
     <>
-      <div className="player-details">{username}</div>
+      <div className="player-details">
+        {username}
+        {username === bettor && <Betting />}
+      </div>
       <div className="cards">
         {cards?.map((card) => (
           <div
