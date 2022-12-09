@@ -1,11 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CardDetails } from "../components/belote/beloteHooks";
+import { CardDetails, Suit } from "../components/belote/beloteHooks";
 import { IPlayer } from "../components/belote/player/Player";
+
+export interface IBet {
+  suit: Suit;
+  rate: Number;
+}
 
 interface BeloteState {
   players: IPlayer[];
   dealer?: string;
   bettor?: string;
+  lastBet?: IBet;
   isStarted: boolean;
 }
 
@@ -29,6 +35,7 @@ const contactSlice = createSlice({
 
       state.isStarted = true;
       state.players.forEach((p) => (p.cards = []));
+
       if (dealer) {
         state.bettor = dealer.left;
       }
@@ -51,8 +58,16 @@ const contactSlice = createSlice({
         );
       }
     },
+    setLastBet: (state, action: PayloadAction<IBet>) => {
+      state.lastBet = { ...action.payload };
+    },
+    setBettor: (state, action: PayloadAction<string>) => {
+      const bettor = state.players.find((p) => p.username === action.payload);
+      state.bettor = bettor?.left;
+    },
   },
 });
 
-export const { startGame, dealCards, playCard } = contactSlice.actions;
+export const { startGame, dealCards, playCard, setLastBet, setBettor } =
+  contactSlice.actions;
 export default contactSlice.reducer;

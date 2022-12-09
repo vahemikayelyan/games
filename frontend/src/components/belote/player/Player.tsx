@@ -25,7 +25,7 @@ const Player = ({ username, cards }: IPlayer) => {
     <>
       <div className="player-details">
         {username}
-        {username === bettor && <Betting />}
+        {username && username === bettor && <Betting username={username} />}
       </div>
       <div className="cards">
         {cards?.map((card) => (
