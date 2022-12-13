@@ -21,7 +21,7 @@ export function usePlayers(username: string) {
   const players = useSelector((state: RootState) => state.belote.players);
   let top = players.find((player) => player.pair === username);
   let bottom = players.find((player) => player.username === username);
-  let left = players.find((player) => player.username === bottom?.left);
+  let left = players.find((player) => player.username === bottom?.next);
   let right = players.find((player) => player.username === left?.pair);
 
   return {
@@ -30,6 +30,24 @@ export function usePlayers(username: string) {
     left,
     right,
   };
+}
+
+export function usePair(pair?: string) {
+  const players = useSelector((state: RootState) => state.belote.players);
+  return players.find((p) => p.username === pair);
+}
+
+export function useCanStart(username?: string) {
+  const players = useSelector(
+    (state: RootState) => state.belote.players
+  ).filter((p) => p.passed === 0);
+
+  if (players.length === 1) {
+    const player = players[0];
+    return player.username === username && !!player.bet;
+  }
+
+  return false;
 }
 
 export function useNewDeck() {

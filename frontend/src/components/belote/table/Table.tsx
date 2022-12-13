@@ -17,7 +17,8 @@ const Table = ({
   left: IPlayer | undefined;
   right: IPlayer | undefined;
 }) => {
-  const isStarted = useSelector((state: RootState) => state.belote.isStarted);
+  const isBetting = useSelector((state: RootState) => state.belote.isBetting);
+  const isPlaying = useSelector((state: RootState) => state.belote.isPlaying);
   const players = useSelector((state: RootState) => state.belote.players);
   const dealer = useSelector((state: RootState) => state.belote.dealer);
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Table = ({
     dispatch(startGame());
 
     while (newDeck.length > 0) {
-      const nextPlayer = player?.left || "";
+      const nextPlayer = player?.next || "";
       dispatch(dealCards([newDeck.splice(0, 4), nextPlayer]));
       player = players.find((p) => p.username === nextPlayer);
     }
@@ -38,7 +39,9 @@ const Table = ({
   return (
     <div className="table">
       <div>
-        {!isStarted && <button onClick={handleDealCards}>Deal cards</button>}
+        {!isPlaying && !isBetting && (
+          <button onClick={handleDealCards}>Deal cards</button>
+        )}
       </div>
       <div style={{ gridRow: "1 / span 3" }}>
         {left?.playedCard && <Card {...left?.playedCard} />}

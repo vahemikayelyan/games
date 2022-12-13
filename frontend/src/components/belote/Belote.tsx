@@ -9,21 +9,13 @@ const Belote = () => {
   return (
     <>
       <div className="grid-container">
-        <div className="top space">
-          <Player {...top} />
-        </div>
-        <div className="left space">
-          <Player {...left} />
-        </div>
+        <div className="top space">{top && <Player {...top} />}</div>
+        <div className="left space">{left && <Player {...left} />}</div>
         <div className="space">
           <Table {...{ top, bottom, left, right }} />
         </div>
-        <div className="right space">
-          <Player {...right} />
-        </div>
-        <div className="bottom space">
-          <Player {...bottom} />
-        </div>
+        <div className="right space">{right && <Player {...right} />}</div>
+        <div className="bottom space">{bottom && <Player {...bottom} />}</div>
       </div>
     </>
   );

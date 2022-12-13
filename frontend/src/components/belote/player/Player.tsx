@@ -1,31 +1,38 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { playCard } from "../../../store/beloteSlice";
+import { IBet, playCard } from "../../../store/beloteSlice";
 import { CardDetails } from "../beloteHooks";
 import Betting from "../betting/Betting";
 import Card from "../card/Card";
 import "./player.css";
 
 export interface IPlayer {
+  bet?: IBet;
   pair?: string;
-  left?: string;
+  next?: string;
   username?: string;
   cards?: CardDetails[];
   playedCard?: CardDetails;
+  passed: number;
 }
 
-const Player = ({ username, cards }: IPlayer) => {
+const Player = (props: IPlayer) => {
+  const { username, next, cards } = props;
   const bettor = useSelector((state: RootState) => state.belote.bettor);
+  const isBetting = useSelector((state: RootState) => state.belote.isBetting);
+  const isPlaying = useSelector((state: RootState) => state.belote.isPlaying);
   const dispatch = useDispatch();
   const handleClick = (card: CardDetails) => {
-    dispatch(playCard([card, username || ""]));
+    if (isPlaying) {
+      dispatch(playCard([card, props.username || ""]));
+    }
   };
 
   return (
     <>
       <div className="player-details">
         {username}
-        {username && username === bettor && <Betting username={username} />}
+        {isBetting && next && username === bettor && <Betting {...props} />}
       </div>
       <div className="cards">
         {cards?.map((card) => (

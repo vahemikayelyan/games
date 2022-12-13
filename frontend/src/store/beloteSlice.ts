@@ -12,18 +12,44 @@ interface BeloteState {
   dealer?: string;
   bettor?: string;
   lastBet?: IBet;
-  isStarted: boolean;
+  isBetting: boolean;
+  isPlaying: boolean;
 }
 
 const initialState: BeloteState = {
   players: [
-    { username: "Vahe", pair: "Armen", left: "Sergey", cards: [] },
-    { username: "Armen", pair: "Vahe", left: "Artur", cards: [] },
-    { username: "Sergey", pair: "Artur", left: "Armen", cards: [] },
-    { username: "Artur", pair: "Sergey", left: "Vahe", cards: [] },
+    {
+      username: "Vahe",
+      pair: "Armen",
+      next: "Sergey",
+      cards: [],
+      passed: 0,
+    },
+    {
+      username: "Armen",
+      pair: "Vahe",
+      next: "Artur",
+      cards: [],
+      passed: 0,
+    },
+    {
+      username: "Sergey",
+      pair: "Artur",
+      next: "Armen",
+      cards: [],
+      passed: 0,
+    },
+    {
+      username: "Artur",
+      pair: "Sergey",
+      next: "Vahe",
+      cards: [],
+      passed: 0,
+    },
   ],
   dealer: "Vahe",
-  isStarted: false,
+  isBetting: false,
+  isPlaying: false,
 };
 
 const contactSlice = createSlice({
@@ -33,11 +59,11 @@ const contactSlice = createSlice({
     startGame: (state) => {
       const dealer = state.players.find((p) => p.username === state.dealer);
 
-      state.isStarted = true;
+      state.isBetting = true;
       state.players.forEach((p) => (p.cards = []));
 
       if (dealer) {
-        state.bettor = dealer.left;
+        state.bettor = dealer.next;
       }
     },
     dealCards: (state, action: PayloadAction<[CardDetails[], string]>) => {
@@ -58,16 +84,59 @@ const contactSlice = createSlice({
         );
       }
     },
-    setLastBet: (state, action: PayloadAction<IBet>) => {
-      state.lastBet = { ...action.payload };
-    },
-    setBettor: (state, action: PayloadAction<string>) => {
-      const bettor = state.players.find((p) => p.username === action.payload);
-      state.bettor = bettor?.left;
+    setBettor: (
+      state,
+      action: PayloadAction<{ bettor: IPlayer; bet?: IBet }>
+    ) => {
+      const { bettor, bet } = action.payload;
+      let player = state.players.find((p) => p.username === bettor.username);
+
+      if (player) {
+        let nextPlayer = state.players.find((p) => p.username === bettor.next);
+        let foundNextBettor: boolean = false;
+
+        if (bet) {
+          state.lastBet = { ...bet };
+          player.bet = { ...bet };
+        } else {
+          player.passed++;
+
+          if (state.players.every((p) => p.passed === 1)) {
+            const lastDealer = state.players.find(
+              (p) => p.username === state.dealer
+            );
+            state.dealer = lastDealer?.next;
+            state.isBetting = false;
+            state.players.forEach((p) => {
+              p.cards = [];
+              p.passed = 0;
+            });
+            return;
+          }
+        }
+
+        while (!foundNextBettor) {
+          let nextPlayerPair = nextPlayer?.pair;
+          let pair = state.players.find((p) => p.username === nextPlayerPair);
+          const nextOfNext = nextPlayer?.next;
+
+          if (
+            nextPlayer &&
+            (nextPlayer.passed === 2 ||
+              (pair && nextPlayer.passed === 1 && pair.passed === 1))
+          ) {
+            nextPlayer = state.players.find((p) => p.username === nextOfNext);
+            nextPlayerPair = nextPlayer?.pair;
+          } else {
+            state.bettor = nextPlayer?.username;
+            foundNextBettor = true;
+          }
+        }
+      }
     },
   },
 });
 
-export const { startGame, dealCards, playCard, setLastBet, setBettor } =
+export const { startGame, dealCards, playCard, setBettor } =
   contactSlice.actions;
 export default contactSlice.reducer;
