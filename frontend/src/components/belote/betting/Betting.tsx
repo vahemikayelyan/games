@@ -82,7 +82,7 @@ const Betting = (props: IPlayer) => {
       <select
         value={suit}
         onChange={handleSuitChange}
-        disabled={props.passed > 0}
+        disabled={props.passed > 0 && !props.isFirstBettor}
       >
         {!!!props.bet && <option key="empty"></option>}
         {suits.map((suit) => (

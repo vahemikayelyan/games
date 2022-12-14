@@ -13,6 +13,7 @@ export interface IPlayer {
   username?: string;
   cards?: CardDetails[];
   playedCard?: CardDetails;
+  isFirstBettor?: boolean;
   passed: number;
 }
 

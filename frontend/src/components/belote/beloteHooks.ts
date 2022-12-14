@@ -38,13 +38,14 @@ export function usePair(pair?: string) {
 }
 
 export function useCanStart(username?: string) {
-  const players = useSelector(
-    (state: RootState) => state.belote.players
-  ).filter((p) => p.passed === 0);
+  const players = useSelector((state: RootState) => state.belote.players);
+  const winners = players.filter((p) => p.passed < 2 && p.bet);
 
-  if (players.length === 1) {
-    const player = players[0];
-    return player.username === username && !!player.bet;
+  if (winners.length === 1) {
+    const winner = winners[0];
+    const pair = players.find((p) => p.username === winner.pair);
+
+    return winner.username === username && pair?.passed === 2;
   }
 
   return false;
